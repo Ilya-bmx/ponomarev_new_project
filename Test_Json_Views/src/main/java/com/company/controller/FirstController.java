@@ -62,7 +62,7 @@ public class FirstController {
     }
 
     @POST
-    @Path("aaa")
+    //@Path("aaa")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response homePostController(String json) throws IOException, URISyntaxException {//попробовать с строки реализовать
@@ -145,9 +145,8 @@ public class FirstController {
     @POST
     @Path("/accept")
     @Consumes("application/json")
-    @Produces("application/json")
     public void getAccept(){
-        System.out.println("accepted");
+        System.out.println("accepted /accept");
     }
 
     @GET
