@@ -23,8 +23,8 @@ public class RequestResponseLoggingFilter implements Filter {
             FilterChain chain) throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        /*res.setHeader("Access-Control-Allow-Origin","*");
-        res.setHeader("Access-Control-Allow-Headers","x-requested-with");*/
+        res.setHeader("Access-Control-Allow-Origin","*");
+        res.setHeader("Access-Control-Allow-Headers","x-requested-with");
         System.out.println(req.getMethod() + " " + req.getRequestURI());
         chain.doFilter(request, response);
     }

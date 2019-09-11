@@ -1,0 +1,18 @@
+body {
+    font-family: 'Lato';
+    max-width: 1140px;
+    min-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: aqua;
+}
+
+input[type="text"]:focus {
+     color: #4b7a99;
+     border: 1px solid #434699
+ }
+
+input[type="text"] {
+    color: #688999;
+    border: 1px solid #408099
+}
