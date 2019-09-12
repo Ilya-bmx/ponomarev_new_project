@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -43,7 +44,7 @@ public class FirstController {
     @Produces("application/json")
     public PojoUser homeGetController() throws JsonProcessingException {
 
-        PojoUser user = new PojoUser(1, "str", "hotel");
+        PojoUser user = new PojoUser(1, "Bob", "Marley", "hotel");
 
         //Усложнённая реализация JsonView ( можно делать через аннотацию надо контроллером )
         /*SerializerFactory serializerFactory = BeanSerializerFactory.instance
@@ -79,7 +80,8 @@ public class FirstController {
     @GET
     @Path("/admin/{pin}")
     @Produces(MediaType.APPLICATION_XML)
-    public Customer getCustomerInXML(@PathParam("pin") int pin) {
+    public Customer getCustomerInXML(@PathParam("pin") int pin, @AuthenticationPrincipal User user) {
+        System.out.println("LOGINED USER::::.... -- " + user);
         /*Customer customer = new Customer();*/
         /*customer.setName("mkyong");
         cu stomer.setSecondName("mkyongichev");
@@ -153,8 +155,10 @@ public class FirstController {
     @POST
     @Path("/accept")
     @Consumes("application/json")
-    public void getAccept(PojoUser user) {
+    public Response getAccept_savePojoUserDraft(PojoUser user) {
         System.out.println("accepted /accept" + user);
+        draftservice.saveConvertPojoUserDraft(user);
+        return Response.ok().entity(user.toString()).build();
     }
 
     @GET
@@ -178,7 +182,7 @@ public class FirstController {
 
     @GET
     @Path("/{key}")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN) // ЕСЛИ не работает для картинки , то поменять МедиаТайп
     public Response getJQuery(@PathParam("key") String key) {
         String path;
         String type = "text/html";
@@ -191,8 +195,9 @@ public class FirstController {
                 path = "/js/main.js";//заменить на .css файлы
                 type = "application/javascript";
                 break;
-            case "main":
-                path = "/documents/src/assets/js/main.js";
+            case "jpeg":
+                path = "/picture/pictureForApp.jpg";
+                type = "image/jpeg";
                 break;
             default:
                 path = "";

@@ -24,9 +24,10 @@ public class PojoUser {
     //необходим для создания экземпляров из запроса
     public PojoUser(){}
 
-    public PojoUser(int i , String name , String status){
+    public PojoUser(int i , String name, String secondName , String status){
         this.id = i;
         this.name = name;
+        this.secondName = secondName;
         this.status = status;
     }
 
@@ -58,6 +59,7 @@ public class PojoUser {
     public String toString(){
         return "{ " + "\"id\"" + " : " + "\"" + id + "\"" + ", " +
                 "\"name\"" + " : " + "\"" + name + "\"" + ", " +
+                "\"second_name\"" + " : " + "\"" + secondName + "\"" + ", " +
                 "\"status\"" + " : " + "\"" + status + "\""
                 + " }";
     }
