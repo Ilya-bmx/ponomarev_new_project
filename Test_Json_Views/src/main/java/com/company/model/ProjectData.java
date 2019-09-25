@@ -14,20 +14,21 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "DATA_TABLE", schema = "USERS")
 public class ProjectData {
+
     @Id
     @Column(name = "login")
     String  login;
     @Column(name = "vendor_code")
     Integer vendor_code;
     @Column(name = "access")
-    String access;
+    String address;
 
     public ProjectData(){}
 
-    public ProjectData(String login , Integer vendor_code , String access){
+    public ProjectData(String login , Integer vendor_code , String address){
         this.login = login;
         this.vendor_code = vendor_code;
-        this.access = access;
+        this.address = address;
     }
 
 }

@@ -1,7 +1,9 @@
 package com.company.components;
 
+import com.company.service.Registrate;
 import org.springframework.stereotype.Component;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 
 /**
@@ -10,6 +12,7 @@ import java.util.ArrayList;
  */
 @Component
 public class Consts {
+
     public static ArrayList<String> access_level;
     static {
         access_level = new ArrayList<>();

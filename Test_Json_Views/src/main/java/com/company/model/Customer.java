@@ -2,6 +2,7 @@ package com.company.model;
 
 /**
  * Created by ponomarev_ia on 28.08.2019.
+ * Можно удалять , нигде не пригодится , сделал для примера как выводить xml
  */
 import javax.xml.bind.annotation.*;
 

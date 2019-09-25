@@ -2,14 +2,16 @@ package com.company.controller;
 
 import com.company.model.*;
 import com.company.model.View.Views;
-import com.company.repos.AccessRepo;
-import com.company.service.AdminService;
 import com.company.service.AuthService;
+import com.company.service.DaoServices.AdminService;
 import com.company.service.DraftService;
+import com.company.service.Registrate;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
 import javax.inject.Inject;
@@ -33,17 +35,22 @@ public class FirstController {
     @Inject
     AuthService authService;
     @Inject
-    AccessRepo accessRepo;
-    @Inject
     AdminService adminService;
     @Inject
     DraftService draftservice;
+    @Inject
+    Registrate registrate;
+
+    @OPTIONS
+    public Response sendOptions(){
+        return Response.ok().status(200).build();
+    }
 
     @JsonView(Views.Internal.class)
     @GET
     @Produces("application/json")
-    public PojoUser homeGetController() throws JsonProcessingException {
-
+    public Response homeGetController() throws JsonProcessingException {
+        registrate.saveFunc();
         PojoUser user = new PojoUser(1, "Bob", "Marley", "hotel");
 
         //Усложнённая реализация JsonView ( можно делать через аннотацию надо контроллером )
@@ -56,8 +63,7 @@ public class FirstController {
         String result = mapper
                 .writerWithView(Views.Internal.class)
                 .writeValueAsString(user);*/
-
-        return user;
+        return Response.ok().status(200).entity(user).build();//user;
     }
 
     @POST
@@ -92,20 +98,22 @@ public class FirstController {
 
     }
 
+    //наделение правами по имени пользователя
     @POST
-    @Path("/admin/auth")
-    public Response getAuthorised(AuthModel authModel) {
-        System.out.println(" " + authModel.getLogin() + "--------" + authModel.getPassword());
-        if (authService.getRegistrated(authModel) == 1) return Response.status(200).entity("Already exist").build();
-        else return Response.status(200).build();
+    @Path("/admin/give")
+    public Response giveRules(AuthModel authModel) {
+        System.out.println(" " + authModel.getLogin() + "--------" + authModel.getRole());
+        String response = adminService.giveSomeRules(authModel.getLogin(), authModel.getRole());
+        return Response.status(200).entity(response).build();
     }
 
-    @GET
-    @Path("/admin/auth/{login}")
-    @Produces("application/json")
-    public Response useAccessableService(@PathParam("login") String login) {
-        //return Response.status(100).build();
-        return Response.ok(100).entity(accessRepo.findAllByLogin(login)).build();
+    //при передаче всё равно роль указывать
+    @POST
+    @Path("/admin/delete")
+    public Response deleteuser(AuthModel authModel) {
+        System.out.println(" " + authModel.getLogin() + "--------" + authModel.getRole());
+        String response = adminService.deleteUser(authModel.getLogin());
+        return Response.status(200).entity(response).build();
     }
 
     @GET
@@ -117,23 +125,33 @@ public class FirstController {
 
     //обработать исключения на непрохождение валидности
     @POST
+    @Consumes("application/json")
     @Path("/worker/save")
-    public Response saveDraft(@Valid @NotNull ApplicationDraft modelObject) {
+    public Response saveDraft(ApplicationDraft modelObject) {
         draftservice.saveDraft(modelObject);
+        System.out.println("ENTERED TO SAVE " + modelObject.toString());
         return Response.ok().build() /*вернуть респонз в которо говоорится что создали например вернуть id анкеты*/;
     }
 
     @POST
     @Path("/worker/delete")
-    public Response deleteDraft(@Valid @NotNull ApplicationDraft modelObject) {
+    public Response deleteDraft(ApplicationDraft modelObject) {
         String response = draftservice.deleteDraftByNumber(modelObject.getNumber());
         return Response.ok().entity(response).build();
+    }
+
+    @POST
+    @Path("role")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getRoleOfPrincipal() {
+        System.out.println("Role Checking DELETE IT ARRRRRRRR");
+        return Response.ok().entity(authService.getPrincipalsRole() == "USER" ? "1" : "2").build();
     }
 
     @GET
     @Path("/worker")
     @Produces("application/json")
-    public Response getWorker_AllDraft() {
+    public Response getWorkers_AllDraft() {
         System.out.println(adminService.getDraftsByWorker().size());
         return Response.ok(100).entity(adminService.getDraftsByWorker()).build();
     }
@@ -141,7 +159,7 @@ public class FirstController {
     @POST
     @Path("/worker/service/{access}")
     public Response saveProjectData(@PathParam("access") String access, @Valid @NotNull ProjectData projectData) {
-        adminService.addProjectData(access, projectData.getLogin(), projectData.getVendor_code(), projectData.getAccess());
+        adminService.addProjectData(access, projectData.getLogin(), projectData.getVendor_code(), projectData.getAddress());
         return Response.ok().build() /*вернуть респонз в которо говоорится что создали например вернуть id анкеты*/;
     }
 
@@ -158,6 +176,17 @@ public class FirstController {
     public Response getAccept_savePojoUserDraft(PojoUser user) {
         System.out.println("accepted /accept" + user);
         draftservice.saveConvertPojoUserDraft(user);
+        return Response.ok().entity(user.toString()).build();
+    }
+
+    //регистрация пользователя
+    //c проверкой на валидность , аккуратней))
+    @POST
+    @Path("/accept1")
+    @Consumes("application/json")
+    public Response getAccept_saveUser(@Valid PojoUser user) {
+        System.out.println("\n" + "trying to registrate : . . . " + user);
+        registrate.saveUserFromRequest(new User(user.getName(), user.getPassword(), true, "USER"));
         return Response.ok().entity(user.toString()).build();
     }
 
@@ -199,6 +228,10 @@ public class FirstController {
                 path = "/picture/pictureForApp.jpg";
                 type = "image/jpeg";
                 break;
+            case "wservice":
+                path = "/wservice.html";
+                type = "text/html";
+                break;
             default:
                 path = "";
         }
@@ -218,4 +251,5 @@ public class FirstController {
                 })
                 .build();
     }
+
 }

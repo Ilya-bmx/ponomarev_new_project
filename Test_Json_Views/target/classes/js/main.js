@@ -10,19 +10,19 @@ function getN() {
     var getNum1 = document.getElementById('textInput1').value;
     var getNum = document.getElementById('textInput').value;
     status = getNum2;
-    secName = getNum1;
+    password = getNum1;
     name = getNum;
     otherHttpFunc();
 }
 function otherHttpFunc() {
     var json = JSON.stringify({
-        id: 01,
         name: name,
-        secondName: secName,
-        status: status
+        password: password,
+        active: true,
+        role: "USER"
     });
     var http = new XMLHttpRequest();
-    var url = 'http://localhost:8080/users/accept';
+    var url = 'http://localhost:8080/users/accept1';
     var params = json;
     http.open('POST', url, true);
     http.setRequestHeader('Content-type', 'application/json');
@@ -58,4 +58,60 @@ function showMessage() {
     };
     request.setRequestHeader("Content-type", "application/json");
     request.send(params);
+}
+var principalRole;
+function getRole() {
+    var http = new XMLHttpRequest();
+    var url = 'http://localhost:8080/users/role';
+    http.open('POST', url, true);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.onreadystatechange = function () {
+        principalRole = http.responseText;
+        if (principalRole != null) {
+            if (principalRole == "2") {
+                document.getElementById("admin").style.display = 'none';
+            }
+            if (principalRole == "1") {
+                document.getElementById("user").style.display = 'none';
+            }
+        }
+    }
+    http.send();
+}
+
+function saveDraft() {
+    alert("NACHAL")
+    var number;
+    var letter;
+    var flag;
+    var elem = document.getElementById('InputBut');
+    elem.addEventListener('click', getNR);
+}
+function getNR() {
+    var getNum2 = document.getElementById('textNumber').value;
+    var getNum1 = document.getElementById('textLetter').value;
+    var getNum = document.getElementById('textFlag').value;
+    number = getNum2;
+    letter = getNum1;
+    flag = getNum;//true always
+    otherHttpFunc1();
+}
+function otherHttpFunc1() {
+    var json1 = JSON.stringify({
+        number: number,
+        letter: letter,
+        flag: (flag == "true" || flag == "false") ? true : false
+    });
+    var http = new XMLHttpRequest();
+    var url = 'http://localhost:8080/users/worker/save';
+    var params1 = json1;
+    http.open('POST', url, true);
+    http.setRequestHeader('Content-type', 'application/json');
+    http.send(params1);
+
+    http.onreadystatechange = function () {//Call a function when the state changes.
+        if (http.readyState == 4 && http.status == 200) {
+            alert("entered in backend");
+        }
+    }
 }

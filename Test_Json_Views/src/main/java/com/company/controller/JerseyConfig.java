@@ -11,6 +11,7 @@ public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig()
     {
-        register(FirstController.class);
+        register(FirstController.class );
+        register(SecondController.class);
     }
 }

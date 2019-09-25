@@ -1,0 +1,18 @@
+#example-1 {
+    height: 100px;
+    width: 350px;
+    margin: auto;
+    background-color: aqua;
+}
+
+#app {
+    height: auto;
+    width: 300px;
+    margin: auto;
+    background-color: #bb91e5;
+    padding: 10px;
+}
+
+.active {
+    background-color: #e55ab3;
+}

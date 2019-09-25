@@ -12,7 +12,7 @@
 
 <body onload="getMethod1()">
 
-<nav role='navigation'>
+<nav role='navigation' onclick="checkRole()">
     <ul>
         <li><a href="#">Home</a></li>
         <li><a href="#">About</a>
@@ -23,11 +23,23 @@
         </li>
         <li><a href="#">Clients</a></li>
         <li><a href="#">Contact Us</a></li>
+        <li><a id="admin" href="#">Admin Panel</a></li>
+            <ul>
+                <li><a href="/users/wservice">giveSomeRules</a></li>
+            </ul>
+        <li><a id="user" href="#">Worker Panel</a>
+            <ul>
+                <li><a href="/users/wservice">saveDraft</a></li>
+                <li><a href="/users/wservice">deleteDraft</a></li>
+                <li><a href="/users/wservice">getWorkers_AllDraft</a></li>
+                <li><a href="/users/wservice">saveProjectData</a></li>
+            </ul>
+        </li>
     </ul>
 </nav>
 
-<div id="bodyDiv">
-        <p id="mainP">PressTheButoonToDoSomeThing</p>
+<div id="bodyDiv1" class="bodyDiv" >
+        <p id="mainP">PressTheButtonToDoSomeThing</p>
         <br/>
         <input class="inputClass" type='button' value='User' onclick='showMessage()'/>
         <br/>
@@ -39,14 +51,13 @@
         <br/>
         <input class="inputClass" id="textInput" name="textfield" type="text" placeholder="enter a name" >
         <br />
-        <input class="inputClass" id="textInput1" name="textfield" type="text" placeholder="enter a second name">
+        <input class="inputClass" id="textInput1" name="textfield" type="password" placeholder="enter a password">
         <br />
-        <input class="inputClass" id="textInput2" name="textfield" type="text" placeholder="enter a status" >
+        <input class="inputClass" id="textInput2" name="textfield" type="password" placeholder="enter a password" >
         <br/>
         <input class="inputClass" id="InputButton" type="button" value="Отправить" >
         <br />
         <br />
-
         <img src="/users/jpeg" width="200"
              height="120" alt="Пример">
     </div>

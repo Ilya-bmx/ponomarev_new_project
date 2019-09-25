@@ -4,6 +4,8 @@ package com.company;
  * Created by ponomarev_ia on 27.08.2019.
  */
 //Этот пример приложения использует ServletContainer Джерси для развертывания API REST.
+        import com.company.service.Registrate;
+        import org.springframework.beans.factory.annotation.Autowired;
         import org.springframework.boot.autoconfigure.SpringBootApplication;
         import org.springframework.boot.builder.SpringApplicationBuilder;
         import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;

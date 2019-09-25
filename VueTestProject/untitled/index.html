@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="js/vue.js"></script>
+    <link rel = "stylesheet" type = "text/css" href = "css/myStyle.css" />
+</head>
+<body>
+<div id="app">
+    <p>String 1</p>
+    <button-input></button-input>
+    <p>String 2</p>
+    <button-input></button-input>
+    <button-counter></button-counter>
+    <p>Insert ToDos</p>
+    <input v-model="newTodo" v-on:keyup.enter="addTodo">
+    <ul>
+        <li v-for="todo in todos">
+            <span>{{ todo.text }}</span>
+            <button v-on:click="removeTodo($index)">X</button>
+        </li>
+    </ul>
+</div>
+<div id="example-1" v-bind:name="name" v-bind:style="styleObject">
+    Hello {{ name }}!
+</div>
+<div id="example-2" v-bind:class="{ active: isActive, 'text-danger': hasError }">
+    <p v-if="greeting">Hello!</p>
+    <button v-on:click="reverse">reverse</button>
+    <button v-on:click="sendRequest">Send</button>
+    <br />
+    <p>Control a Background</p>
+    <button v-on:click="dinamicCssControl">change</button>
+</div>
+<h1 id="h1" v-show="ok">Привет!</h1>
+<div id="firstForm">
+    <input v-model="name" placeholder="enter a name" v-on:keyup.enter="alertAction">
+</div>
+<script src="components/components.js"></script>
+<script src="js/indexjs.js"></script>
+</body>
+</html>

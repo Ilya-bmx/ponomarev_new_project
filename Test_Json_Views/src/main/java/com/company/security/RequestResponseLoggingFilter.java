@@ -24,7 +24,8 @@ public class RequestResponseLoggingFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
         res.setHeader("Access-Control-Allow-Origin","*");
-        res.setHeader("Access-Control-Allow-Headers","x-requested-with");
+        res.setHeader("Access-Control-Allow-Headers","Content-type");
+        res.setHeader("Access-Control-Request-Method","GET, POST, OPTIONS");
         System.out.println(req.getMethod() + " " + req.getRequestURI());
         chain.doFilter(request, response);
     }

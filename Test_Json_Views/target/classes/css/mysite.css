@@ -26,7 +26,7 @@ input[type="text"] {
     vertical-align: middle;
     text-align: center;
     text-decoration: none;
-    text-shadow: 0 -1px 1px #525277;
+    text-shadow: 0 -1px 1px #5658c9;
     color: #fff;
     outline: none;
     border: 2px solid #7a93f6;
@@ -45,7 +45,7 @@ input[type="text"] {
     margin-bottom: 10px;
 }
 
-#bodyDiv {
+.bodyDiv {
     align-items: center;
     margin-top: 100px;
     margin-left: 100px;
